@@ -1,15 +1,18 @@
 import { useState } from 'react'
-import type { FormEvent } from 'react'
+import type {  FormEvent } from 'react'
 import { Form, Row, Col, Button } from 'react-bootstrap'
+import { useAppDispatch } from '../../hooks/redux'
+import { setFilters, resetFilters } from '../../store/slices/filtersSlice'
 import type { IntervalFilters } from '../../types/interval'
 import './Filters.css'
 
 interface FiltersProps {
-    onFiltersChange: (filters: IntervalFilters) => void
     loading?: boolean
+    onFiltersChange: (filters: IntervalFilters) => void
 }
 
-const Filters = ({ onFiltersChange, loading = false }: FiltersProps) => {
+const Filters = ({ loading = false, onFiltersChange }: FiltersProps) => {
+    const dispatch = useAppDispatch()
     const [title, setTitle] = useState('')
     const [toneMin, setToneMin] = useState('')
     const [toneMax, setToneMax] = useState('')
@@ -23,6 +26,7 @@ const Filters = ({ onFiltersChange, loading = false }: FiltersProps) => {
         if (toneMin) filters.toneMin = parseFloat(toneMin)
         if (toneMax) filters.toneMax = parseFloat(toneMax)
 
+        dispatch(setFilters(filters))
         onFiltersChange(filters)
     }
 
@@ -30,7 +34,8 @@ const Filters = ({ onFiltersChange, loading = false }: FiltersProps) => {
         setTitle('')
         setToneMin('')
         setToneMax('')
-        onFiltersChange({}) // Сбрасываем фильтры
+        dispatch(resetFilters())
+        onFiltersChange({})
     }
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -41,6 +46,7 @@ const Filters = ({ onFiltersChange, loading = false }: FiltersProps) => {
 
     return (
         <div className="filters-container">
+            <h5>Фильтры</h5>
             <Form onSubmit={handleSubmit}>
                 <Row className="g-3">
                     <Col md={4}>

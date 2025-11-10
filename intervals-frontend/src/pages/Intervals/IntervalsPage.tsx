@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
-import { Container, Row, Col, Spinner, Alert } from 'react-bootstrap'
+import { Container, Spinner, Alert } from 'react-bootstrap'
 import type { Interval, IntervalFilters } from '../../types/interval'
 import { intervalsApi } from '../../services/api'
+import { useFilters } from '../../store/slices/filtersSlice'
 import Filters from '../../components/Filters/Filters'
 import IntervalCard from '../../components/IntervalCard/IntervalCard'
 import { ROUTE_LABELS } from '../../utils/routes'
@@ -12,10 +13,11 @@ const IntervalsPage = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
 
-    // Загрузка интервалов при монтировании
+    const filtersFromStore = useFilters()
+
     useEffect(() => {
-        loadIntervals({})
-    }, [])
+        loadIntervals(filtersFromStore)
+    }, [filtersFromStore])
 
     const loadIntervals = async (filters: IntervalFilters) => {
         try {
@@ -37,8 +39,6 @@ const IntervalsPage = () => {
 
     return (
         <Container>
-            {/* Убрали Breadcrumbs */}
-
             <div className="page-header">
                 <h1>{ROUTE_LABELS.INTERVALS}</h1>
                 <p className="page-subtitle">
@@ -67,21 +67,19 @@ const IntervalsPage = () => {
                     <p>Попробуйте изменить параметры фильтрации</p>
                 </div>
             ) : (
-                <Row className="g-4">
-                    {intervals.map((interval) => (
-                        <Col key={interval.id} xs={12} sm={6} lg={3}>
-                            <IntervalCard interval={interval} />
-                        </Col>
-                    ))}
-                </Row>
-            )}
+                <>
+                    <div className="intervals-grid">
+                        {intervals.map((interval) => (
+                            <IntervalCard key={interval.id} interval={interval} />
+                        ))}
+                    </div>
 
-            {!loading && intervals.length > 0 && (
-                <div className="results-count mt-4">
-                    <p className="text-muted">
-                        Найдено интервалов: <strong>{intervals.length}</strong>
-                    </p>
-                </div>
+                    <div className="results-count">
+                        <p className="text-muted">
+                            Найдено интервалов: <strong>{intervals.length}</strong>
+                        </p>
+                    </div>
+                </>
             )}
         </Container>
     )
