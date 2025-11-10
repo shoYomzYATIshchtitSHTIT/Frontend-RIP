@@ -1,0 +1,22 @@
+.custom-breadcrumb {
+    padding: 1rem 0;
+    margin-bottom: 0;
+}
+
+.breadcrumb-item.active {
+    color: #6c757d;
+}
+
+.breadcrumb-item a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.breadcrumb-item a:hover {
+    text-decoration: underline;
+}
+
+.active-crumb {
+    color: #6c757d;
+    font-weight: 500;
+}
