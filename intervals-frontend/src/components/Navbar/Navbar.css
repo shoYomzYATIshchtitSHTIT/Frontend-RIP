@@ -1,0 +1,23 @@
+.custom-navbar {
+    background-color: #7978F7 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white !important;
+    text-decoration: none;
+}
+
+.navbar-brand:hover {
+    color: white !important;
+    text-decoration: none;
+}
+
+.navbar-brand img {
+    margin-right: 8px;
+}
