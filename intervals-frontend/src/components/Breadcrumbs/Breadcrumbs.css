@@ -20,3 +20,27 @@
     color: #6c757d;
     font-weight: 500;
 }
+
+@media (max-width: 767px) {
+    .custom-breadcrumb {
+        padding: 0.5rem 0;
+        font-size: 0.9rem;
+    }
+
+    .breadcrumb-item {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .breadcrumb-item {
+        max-width: 80px;
+    }
+
+    .breadcrumb-item a {
+        font-size: 0.85rem;
+    }
+}

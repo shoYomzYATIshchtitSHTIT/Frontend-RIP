@@ -7,13 +7,13 @@ const Navbar = () => {
     const location = useLocation()
 
     return (
-        <BSNavbar bg="primary" variant="dark" expand="lg" className="custom-navbar">
+        <BSNavbar expand="lg" className="custom-navbar" variant="dark">
             <Container>
                 <Link to={ROUTES.HOME} className="navbar-brand">
                     <img
                         src="/img/image.png"
-                        width="30"
-                        height="30"
+                        width="60"
+                        height="60"
                         className="d-inline-block align-top"
                         alt="Логотип База интервалов"
                     />
