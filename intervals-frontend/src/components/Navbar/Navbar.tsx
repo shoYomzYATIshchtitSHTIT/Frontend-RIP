@@ -11,7 +11,7 @@ const Navbar = () => {
             <Container>
                 <Link to={ROUTES.HOME} className="navbar-brand">
                     <img
-                        src="/img/image.png"
+                        src={import.meta.env.BASE_URL + 'img/image.png'}
                         width="60"
                         height="60"
                         className="d-inline-block align-top"
@@ -20,7 +20,7 @@ const Navbar = () => {
                     База интервалов
                 </Link>
 
-                <BSNavbar.Toggle aria-controls="basic-navbar-nav" />
+                <BSNavbar.Toggle aria-controls="basic-navbar-nav"/>
                 <BSNavbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link

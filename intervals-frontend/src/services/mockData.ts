@@ -1,7 +1,7 @@
 import type { Interval } from '../types/interval'
 
-// Дефолтное изображение
-export const DEFAULT_INTERVAL_IMAGE = '/img/default_interval.png'
+// Дефолтное изображение через BASE_URL
+export const DEFAULT_INTERVAL_IMAGE = import.meta.env.BASE_URL + 'img/default_interval.png'
 
 export const mockIntervals: Interval[] = [
     {
