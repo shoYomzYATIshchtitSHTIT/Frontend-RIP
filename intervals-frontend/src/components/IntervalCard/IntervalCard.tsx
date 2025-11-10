@@ -9,17 +9,23 @@ interface IntervalCardProps {
 }
 
 const IntervalCard = ({ interval }: IntervalCardProps) => {
-    // Используем дефолтное изображение сразу, чтобы избежать лишних запросов
-    const imageUrl = DEFAULT_INTERVAL_IMAGE
+    // ИСПРАВЛЕНИЕ: используем картинку из интервала, а не всегда дефолтную
+    const imageUrl = interval.photo || DEFAULT_INTERVAL_IMAGE
+
+    const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+        const target = e.target as HTMLImageElement
+        console.warn(`❌ Ошибка загрузки картинки: ${imageUrl}`)
+        target.src = DEFAULT_INTERVAL_IMAGE
+    }
 
     return (
         <Card className="interval-card h-100">
             <div className="card-image-container">
-                <Card.Img
-                    variant="top"
+                <img
                     src={imageUrl}
                     alt={interval.title}
                     className="interval-image"
+                    onError={handleImageError}
                 />
             </div>
 

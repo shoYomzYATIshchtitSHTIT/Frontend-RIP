@@ -3,6 +3,38 @@ import { mockIntervals, DEFAULT_INTERVAL_IMAGE } from './mockData'
 
 const API_BASE = '/api'
 
+// Функция для исправления путей к картинкам
+const fixImagePath = (photoPath: string | null | undefined): string => {
+    if (!photoPath) {
+        console.log('No photo path provided, using default')
+        return DEFAULT_INTERVAL_IMAGE
+    }
+
+    console.log('Original photo path from backend:', photoPath)
+
+    // Если это абсолютный URL (начинается с http)
+    if (photoPath.startsWith('http')) {
+        console.log('Absolute URL detected, using as-is:', photoPath)
+        return photoPath
+    }
+
+    // Если путь уже правильный (начинается с /img/)
+    if (photoPath.startsWith('/img/')) {
+        return photoPath
+    }
+
+    // Если бекенд возвращает просто имя файла
+    if (photoPath.includes('.png') || photoPath.includes('.jpg') || photoPath.includes('.jpeg')) {
+        const fixedPath = `/img/${photoPath}`
+        console.log('Fixed photo path:', fixedPath)
+        return fixedPath
+    }
+
+    // Если путь непонятный - используем дефолт
+    console.warn('Unknown photo path format, using default:', photoPath)
+    return DEFAULT_INTERVAL_IMAGE
+}
+
 export const intervalsApi = {
     getIntervals: async (filters?: IntervalFilters): Promise<Interval[]> => {
         try {
@@ -17,17 +49,23 @@ export const intervalsApi = {
 
             const data = await response.json()
 
-            console.log('Данные от бекенда:', data)
+            console.log('📦 Данные от бекенда:', data)
 
             // Преобразуем данные от бекенда в наш формат
-            return data.map((item: any) => ({
-                id: item.ID,
-                title: item.Title,
-                description: item.Description,
-                tone: item.Tone,
-                photo: item.Photo || DEFAULT_INTERVAL_IMAGE,
-                isDelete: item.IsDelete || false
-            }))
+            const intervals = data.map((item: any) => {
+                const interval = {
+                    id: item.ID,
+                    title: item.Title,
+                    description: item.Description,
+                    tone: item.Tone,
+                    photo: fixImagePath(item.Photo), // Используем функцию исправления путей
+                    isDelete: item.IsDelete || false
+                }
+                console.log(`🖼️ Интервал ${interval.title}:`, interval.photo)
+                return interval
+            })
+
+            return intervals
         } catch (error) {
             console.warn('Используем mock данные:', error)
 
@@ -59,14 +97,20 @@ export const intervalsApi = {
 
             const item = await response.json()
 
-            return {
+            console.log('📦 Данные от бекенда (один интервал):', item)
+
+            const interval = {
                 id: item.ID,
                 title: item.Title,
                 description: item.Description,
                 tone: item.Tone,
-                photo: item.Photo || DEFAULT_INTERVAL_IMAGE,
+                photo: fixImagePath(item.Photo), // Используем функцию исправления путей
                 isDelete: item.IsDelete || false
             }
+
+            console.log(`🖼️ Интервал ${interval.title}:`, interval.photo)
+
+            return interval
         } catch (error) {
             console.warn('Используем mock данные')
             const interval = mockIntervals.find(i => i.id === id && !i.isDelete)

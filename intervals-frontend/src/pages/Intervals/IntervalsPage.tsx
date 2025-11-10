@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Container, Row, Col, Spinner, Alert } from 'react-bootstrap'
+import { Container, Spinner, Alert } from 'react-bootstrap'
 import type { Interval, IntervalFilters } from '../../types/interval'
 import { intervalsApi } from '../../services/api'
 import Filters from '../../components/Filters/Filters'
@@ -22,6 +22,7 @@ const IntervalsPage = () => {
             setLoading(true)
             setError(null)
             const data = await intervalsApi.getIntervals(filters)
+            console.log('📋 Загруженные интервалы:', data) // Добавим логирование
             setIntervals(data)
         } catch (err) {
             setError('Не удалось загрузить интервалы')
@@ -37,8 +38,6 @@ const IntervalsPage = () => {
 
     return (
         <Container>
-            {/* Убрали Breadcrumbs */}
-
             <div className="page-header">
                 <h1>{ROUTE_LABELS.INTERVALS}</h1>
                 <p className="page-subtitle">
@@ -67,13 +66,12 @@ const IntervalsPage = () => {
                     <p>Попробуйте изменить параметры фильтрации</p>
                 </div>
             ) : (
-                <Row className="g-4">
+                // ЗАМЕНИЛИ Row/Col на div с грид-классом
+                <div className="intervals-grid">
                     {intervals.map((interval) => (
-                        <Col key={interval.id} xs={12} sm={6} lg={3}>
-                            <IntervalCard interval={interval} />
-                        </Col>
+                        <IntervalCard key={interval.id} interval={interval} />
                     ))}
-                </Row>
+                </div>
             )}
 
             {!loading && intervals.length > 0 && (
