@@ -15,9 +15,10 @@ if ("serviceWorker" in navigator) {
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <Provider store={store}>
-            <BrowserRouter> {/* БЕЗ basename */}
+            <BrowserRouter basename="/Frontend-RIP">
                 <App />
             </BrowserRouter>
+
         </Provider>
     </React.StrictMode>,
 )

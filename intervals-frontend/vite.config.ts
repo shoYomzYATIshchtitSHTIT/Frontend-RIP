@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  base: '/Frontend-RIP/', // <-- имя репозитория
   plugins: [
     react(),
     VitePWA({
@@ -19,21 +20,12 @@ export default defineConfig({
         theme_color: "#7978F7",
         orientation: "portrait-primary",
         icons: [
-          {
-            src: "/img/logo192.png",  // путь от корня сайта
-            type: "image/png",
-            sizes: "192x192"
-          },
-          {
-            src: "/img/logo512.png",
-            type: "image/png",
-            sizes: "512x512"
-          }
+          { src: "/img/logo192.png", type: "image/png", sizes: "192x192" },
+          { src: "/img/logo512.png", type: "image/png", sizes: "512x512" }
         ],
       },
     })
   ],
-  // base: "/Frontend-RIP/", // НЕ ИСПОЛЬЗУЕМ для разработки
   server: {
     port: 3000,
     proxy: {
