@@ -5,7 +5,7 @@ const store = configureStore({
     reducer: {
         filters: filtersReducer
     },
-    devTools: import.meta.env.DEV
+    devTools: import.meta.env.MODE !== 'production' || window.location.hostname.includes('github.io'),
 })
 
 // Экспортируем типы правильно
