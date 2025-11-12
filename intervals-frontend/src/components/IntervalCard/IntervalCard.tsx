@@ -2,6 +2,7 @@ import { Card, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import type { Interval } from '../../types/interval'
 import { DEFAULT_INTERVAL_IMAGE } from '../../services/mockData'
+import { fixImagePath } from '../../target_config'
 import './IntervalCard.css'
 
 interface IntervalCardProps {
@@ -9,17 +10,23 @@ interface IntervalCardProps {
 }
 
 const IntervalCard = ({ interval }: IntervalCardProps) => {
-    // Используем дефолтное изображение сразу, чтобы избежать лишних запросов
-    const imageUrl = DEFAULT_INTERVAL_IMAGE
+    // Используем fixImagePath для корректного URL
+    const imageUrl = fixImagePath(interval.photo) || DEFAULT_INTERVAL_IMAGE
+
+    const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+        const target = e.target as HTMLImageElement
+        console.warn(`❌ Ошибка загрузки картинки: ${imageUrl}`)
+        target.src = DEFAULT_INTERVAL_IMAGE
+    }
 
     return (
         <Card className="interval-card h-100">
             <div className="card-image-container">
-                <Card.Img
-                    variant="top"
+                <img
                     src={imageUrl}
                     alt={interval.title}
                     className="interval-image"
+                    onError={handleImageError}
                 />
             </div>
 

@@ -1,7 +1,6 @@
 import type { Interval, IntervalFilters } from '../types/interval'
 import { mockIntervals, DEFAULT_INTERVAL_IMAGE } from './mockData'
-
-const API_BASE = '/api'
+import { dest_api, fixImagePath } from '../target_config'
 
 export const intervalsApi = {
     getIntervals: async (filters?: IntervalFilters): Promise<Interval[]> => {
@@ -11,21 +10,19 @@ export const intervalsApi = {
             if (filters?.toneMin) params.append('tone_min', filters.toneMin.toString())
             if (filters?.toneMax) params.append('tone_max', filters.toneMax.toString())
 
-            const response = await fetch(`${API_BASE}/intervals?${params}`)
-
+            const response = await fetch(`${dest_api}/intervals?${params}`)
             if (!response.ok) throw new Error('API недоступен')
 
             const data = await response.json()
-
             console.log('Данные от бекенда:', data)
 
-            // Преобразуем данные от бекенда в наш формат
             return data.map((item: any) => ({
                 id: item.ID,
                 title: item.Title,
                 description: item.Description,
                 tone: item.Tone,
-                photo: item.Photo || DEFAULT_INTERVAL_IMAGE,
+                // 🔧 исправляем localhost → IP
+                photo: fixImagePath(item.Photo) || DEFAULT_INTERVAL_IMAGE,
                 isDelete: item.IsDelete || false
             }))
         } catch (error) {
@@ -53,25 +50,23 @@ export const intervalsApi = {
 
     getInterval: async (id: number): Promise<Interval> => {
         try {
-            const response = await fetch(`${API_BASE}/intervals/${id}`)
-
+            const response = await fetch(`${dest_api}/intervals/${id}`)
             if (!response.ok) throw new Error('API недоступен')
 
             const item = await response.json()
-
             return {
                 id: item.ID,
                 title: item.Title,
                 description: item.Description,
                 tone: item.Tone,
-                photo: item.Photo || DEFAULT_INTERVAL_IMAGE,
+                // тоже исправляем путь
+                photo: fixImagePath(item.Photo) || DEFAULT_INTERVAL_IMAGE,
                 isDelete: item.IsDelete || false
             }
         } catch (error) {
             console.warn('Используем mock данные')
             const interval = mockIntervals.find(i => i.id === id && !i.isDelete)
             if (!interval) throw new Error('Интервал не найден')
-
             return interval
         }
     }

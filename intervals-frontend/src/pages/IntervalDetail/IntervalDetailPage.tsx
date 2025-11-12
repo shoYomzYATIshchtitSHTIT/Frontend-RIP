@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom'
 import { Container, Row, Col, Card, Spinner, Alert } from 'react-bootstrap'
 import type { Interval } from '../../types/interval'
 import { intervalsApi } from '../../services/api'
+import { fixImagePath } from '../../target_config'
+import {DEFAULT_INTERVAL_IMAGE} from '../../services/api.ts'
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs'
 import './IntervalDetailPage.css'
 
@@ -73,7 +75,7 @@ const IntervalDetailPage = () => {
                             <Col md={6}>
                                 <div className="image-container">
                                     <img
-                                        src={interval.photo}
+                                        src={fixImagePath(interval.photo) || DEFAULT_INTERVAL_IMAGE}
                                         alt={interval.title}
                                         className="detail-image"
                                     />

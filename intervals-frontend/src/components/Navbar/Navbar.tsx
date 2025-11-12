@@ -11,7 +11,7 @@ const Navbar = () => {
             <Container>
                 <Link to={ROUTES.HOME} className="navbar-brand">
                     <img
-                        src={import.meta.env.BASE_URL + 'img/image.png'}
+                        src={'img/image.png'}
                         width="60"
                         height="60"
                         className="d-inline-block align-top"
